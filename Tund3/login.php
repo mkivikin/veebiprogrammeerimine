@@ -5,7 +5,7 @@
 	$gender;
 	$myEmail;
 	
-	if  (isset($_POST["loginEmail"])) {
+	if  (isset($_POST["loginEmail"])){
 		$myUsername = $_POST["loginEmail"];
 	}
 	else {
