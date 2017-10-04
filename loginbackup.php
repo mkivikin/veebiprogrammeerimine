@@ -56,7 +56,7 @@
 	
 	if (isset ($_POST["signupPassword"])){
 		if (empty ($_POST["signupPassword"])){
-			$signupPasswordError = "Parool on kohustuslik";
+			$signupPasswordError = "NB! Väli on kohustuslik!";
 		} else {
 			//polnud tühi
 			if (strlen($_POST["signupPassword"]) < 8){
@@ -137,7 +137,7 @@
 		if (checkdate(intval($_POST["signupBirthMonth"]), intval($_POST["signupBirthDay"]), intval($_POST["signupBirthYear"]))) {
 			$birthDate = date_create($_POST["signupBirthMonth"] ."/"  .$_POST["signupBirthDay"] ."/" .$_POST["signupBirthYear"]);
 			$signupBirthDate = date_format($birthDate, "Y-m-d");
-			//echo $signupBirthDate;
+			echo $signupBirthDate;
 		} else {
 			$signupBirthDayError = "Sünnikuupäev on vigane";
 		}
@@ -148,7 +148,7 @@
 	
 	//UUE KASUTAJA LISAMINE ANDMEBAASI
 	if(empty ($signupFirstNameError) and empty($signupFamilyNameError) and empty($signupBirthDayError) and empty($signupGenderError) and empty($signupEmailError) and empty($signupPasswordError) and !empty($_POST["signupPassword"])) {
-		//echo "hakkan andmeid salvestama";
+		echo "hakkan andmeid salvestama";
 		$signupPassword = hash("sha512", $_POST["signupPassword"]);
 		
 		//ühendus serveriga
@@ -163,13 +163,23 @@
 		$stmt->bind_param("sssiss", $signupFirstName, $signupFamilyName, $signupBirthDate, $gender, $signupEmail, $signupPassword);
 		//stmt->execute();
 		if ($stmt->execute()) {
-			echo "Kasutaja registreeritud";
+			echo "Läks väga hästi";
 		} else {
 			echo "Tekkis viga: " .$stmt->error;
 		}
 	} else {
 		
 	}
+	
+	if (!empty ($signupFirstNameError) || !empty ($signupFamilyName) || !empty ($signupBirthDayError) || !empty ($signupGenderError) || !empty ($signupPasswordError) || !empty ($signupEmailError)) {
+				echo "Tekkisid järgnevad vead:";
+				echo "<br>" .$signupFirstNameError;
+				echo "<br>" .$signupFamilyNameError;
+				echo "<br>" .$signupBirthDayError;
+				echo "<br>" .$signupGenderError;
+				echo "<br>" .$signupEmailError;
+				echo "<br>" .$signupPasswordError;
+			}
 	
 ?>
 <!DOCTYPE html>
@@ -183,67 +193,49 @@
 	<p>Siin harjutame sisselogimise funktsionaalsust.</p>
 	
 	<form method="POST">
-	<table border="0" cellpadding="5px" cellspacing="5px">
-		<tr>
-			<td><label>Kasutajanimi (E-post): </label></td>
-			<td><input name="loginEmail" type="email" value="<?php echo $loginEmail; ?>"></td>
-		</tr>
-		<tr>
-			<td><label>Parool: </label></td>
-			<td><input name="loginPassword" placeholder="Salasõna" type="password"></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><input type="submit" value="Logi sisse"></td>
-		</tr>
-	</table>
+		<label>Kasutajanimi (E-post): </label>
+		<input name="loginEmail" type="email" value="<?php echo $loginEmail; ?>">
+		<br><br>
+		<input name="loginPassword" placeholder="Salasõna" type="password">
+		<br><br>
+		<input type="submit" value="Logi sisse">
 	</form>
 	
 	<h1>Loo kasutaja</h1>
 	<p>Kui pole veel kasutajat....</p>
 	
 	<form method="POST">
-	<table border="0" cellpadding="5px" cellspacing="5px">
-		<tr>
-			<td><label>Eesnimi: </label></td>
-			<td><input name="signupFirstName" type="text" value="<?php echo $signupFirstName; ?>"></td>
-			<td><span style="color:red" ><?php echo $signupFirstNameError; ?></span></td>
-		</tr>
-		<tr>
-			<td><label>Perekonnanimi: </label></td>
-			<td><input name="signupFamilyName" type="text" value="<?php echo $signupFamilyName; ?>"></td>
-			<td><span style="color:red" ><?php echo $signupFamilyNameError; ?></span></td>
-		</tr>
-		<tr>
-			<td><label> Sisesta sünnikuupäev: </label></td>
-			<td><?php
-				echo "\n <br> \n" .$signupDaySelectHTML ."\n" .$signupMonthSelectHTML ."\n" .$signupYearSelectHTML ."\n <br> \n";$signupMonthSelectHTML;
-			?></td>
-			<td><span style="color:red" ><?php echo $signupBirthDayError; ?></span></td>
-		</tr>
-		<tr>
-			<td><label>Sugu:</label><span></td>
-			<td>
-			<input type="radio" name="gender" value="1" <?php if ($gender == '1') {echo 'checked';} ?>><label>Mees</label> <!-- Kõik läbi POST'i on string!!! -->
-			<input type="radio" name="gender" value="2" <?php if ($gender == '2') {echo 'checked';} ?>><label>Naine</label>
-			</td>
-			<td><span style="color:red" ><?php echo $signupGenderError; ?></span></td>
-		</tr>
-		<tr>
-			<td><label>Kasutajanimi (E-post):</label></td>
-			<td><input name="signupEmail" type="email" value="<?php echo $signupEmail; ?>"></td>
-			<td><span style="color:red" ><?php echo $signupEmailError; ?></span></td>
-		<tr>
-		<tr>
-			<td><label>Parool:</label></td>
-			<td><input name="signupPassword" placeholder="Salasõna" type="password"></td>
-			<td><span style="color:red"><?php echo $signupPasswordError; ?></span></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><input type="submit" value="Loo kasutaja"></td>
-		</tr>
-	</table> 
+		<label>Eesnimi </label>
+		<input name="signupFirstName" type="text" value="<?php echo $signupFirstName; ?>">
+		<span style="color:red" ><?php echo $signupFirstNameError; ?></span>
+		<br>
+		<label>Perekonnanimi </label>
+		<input name="signupFamilyName" type="text" value="<?php echo $signupFamilyName; ?>">
+		<span style="color:red" ><?php echo $signupFamilyNameError; ?></span>
+		<br>
+		<label> Sisesta sünnikuupäev </label>
+		<?php
+			echo "\n <br> \n" .$signupDaySelectHTML ."\n" .$signupMonthSelectHTML ."\n" .$signupYearSelectHTML ."\n <br> \n";$signupMonthSelectHTML;
+		?>
+		<span style="color:red" ><?php echo $signupBirthDayError; ?></span>
+		<br><br>
+		<label>Sugu</label><span>
+		<br>
+		<input type="radio" name="gender" value="1" <?php if ($gender == '1') {echo 'checked';} ?>><label>Mees</label> <!-- Kõik läbi POST'i on string!!! -->
+		<input type="radio" name="gender" value="2" <?php if ($gender == '2') {echo 'checked';} ?>><label>Naine</label>
+		<span style="color:red" ><?php echo $signupGenderError; ?></span>
+		<br><br>
+		
+		<label>Kasutajanimi (E-post)</label>
+		<input name="signupEmail" type="email" value="<?php echo $signupEmail; ?>">
+		<span style="color:red" ><?php echo $signupEmailError; ?></span>
+		<br><br>
+		<input name="signupPassword" placeholder="Salasõna" type="password
+		<span style="color:red" ><?php echo $signupPasswordError; ?></span>
+		<br><br>
+
+		
+		<input type="submit" value="Loo kasutaja">
 	</form>
 		
 </body>
