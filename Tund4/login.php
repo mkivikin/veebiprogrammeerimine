@@ -30,7 +30,7 @@
 	if (isset ($_POST["signupFirstName"])){
 		if (empty ($_POST["signupFirstName"])){
 			$signupFirstNameError ="Teil jäi eesnimi sisestamata.";
-			echo $signupFirstNameError;
+			//echo $signupFirstNameError;
 		} else {
 			$signupFirstName = $_POST["signupFirstName"];
 		}
@@ -60,7 +60,7 @@
 		} else {
 			//polnud tühi
 			if (strlen($_POST["signupPassword"]) < 8){
-				//$signupPasswordError = "NB! Liiga lühike salasõna, vaja vähemalt 8 tähemärki!";
+				$signupPasswordError = "NB! Liiga lühike salasõna, vaja vähemalt 8 tähemärki!";
 			}
 		}
 	}
