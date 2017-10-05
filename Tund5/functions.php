@@ -1,6 +1,42 @@
 <?php
 	$database = "if17_marek";
 	
+	//alustame sessiooni
+	session_start();
+	
+	//sisselogimine
+	function signIn($email, $password){
+		$notice = "";
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"],$GLOBALS["serverPassword"], $GLOBALS["database"]);
+		$stmt = $mysqli->prepare("SELECT id, email, password FROM vp_users WHERE email = ?");
+		$stmt->bind_param("s", $email);
+		$stmt->bind_result($id, $emailFromDb, $passwordFromDb);
+		$stmt->execute();
+		
+		//kontrollime kasutajat
+		
+		if($stmt->fetch()) { // kui fetch ja saab midagi kätte
+			$hash = hash("sha512", $password);
+			if($hash == $passwordFromDb) {
+				$notice = "Kõik korras, logisimegi sisse";
+				//salvestame sessiooni muutujaid
+				$_SESSION["userID"] = $id;
+				$_SESSION["userEmail"] = $emailFromDb; 
+				
+				//liigume pealehele
+				header("Location: main.php");
+				exit();
+			} else {
+				$notice = "Sisestasite ebakorrektse salasõna";
+			}
+			
+		} else {
+			$notice = "Sellist kasutajat:." .$email ."ei ole";
+		}
+		return $notice;
+		
+	}
+	
 	//uue kasutaja lisamine andmebaasi
 	function signUp($signupFirstName, $signupFamilyName, $signupBirthDate, $gender, $signupEmail, $signupPassword){
 			//ühendus serveriga
@@ -16,12 +52,14 @@
 			//stmt->execute();
 			if ($stmt->execute()) {
 				echo "Kasutaja registreeritud";
+				
 			} else {
 				echo "Tekkis viga: " .$stmt->error;
 			}
 			$stmt->close();
 			$mysqli->close();
 	}		
+	
 	//sisestuse kontrollimine
 	function test_input($data) {
 		$data = trim($data); //eemaldab lõpust tühiku
@@ -29,9 +67,6 @@
 		$data = htmlspecialchars($data); //eemaldab keelatud märgid
 		return $data;
 	}
-	$x = 5;
-	$y = 5;
-	echo "Esimene summa on:" .($x + $y);
 	
 	function add_values() {
 		echo "Teine summa on:" .(($GLOBALS["x"]) + ($GLOBALS["y"]));

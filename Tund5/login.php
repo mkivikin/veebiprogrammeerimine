@@ -9,6 +9,8 @@
 	$signupBirthMonth = null;
 	$signupBirthYear = null;
 	$loginEmail = "";
+	$loginPasswordError = "";
+	$notice = "";
 	$signupBirthDate = null;
 	//errorite muutujad
 	$signupFirstNameError = "";
@@ -18,15 +20,33 @@
 	$signupEmailError = "";
 	$signupPasswordError = "";
 	
-	add_values();
-	//kas on kasutajanimi sisestatud
-	if (isset ($_POST["loginEmail"])){
-		if (empty ($_POST["loginEmail"])){
-			//$loginEmailError ="NB! Ilma selleta ei saa sisse logida!";
-		} else {
-			$loginEmail = $_POST["loginEmail"];
-		}
+	if(isset ($_SESSION["userID"])){
+		header("Location: main.php");
+		exit();
 	}
+	
+	//Kas klõpsati sisselogimise nuppu?
+	if (isset ($_POST["signinButton"])) {
+		//kas on kasutajanimi sisestatud
+		if (isset ($_POST["loginEmail"])){
+			if (empty ($_POST["loginEmail"])){
+				$loginEmailError ="NB! Ilma selleta ei saa sisse logida!";
+			} else {
+				$loginEmail = $_POST["loginEmail"];
+			}
+		}
+		if (isset ($_POST["loginPassword"])) {
+			if (empty ($_POST["loginPassword"])) {
+				$loginPasswordError = "Sisse logimiseks on vaja sisestada parool";
+			}
+		else {
+		}
+		}
+		
+		if(!empty($loginEmail) and !empty($_POST["loginPassword"])) {
+			$notice = signIn($loginEmail, $_POST["loginPassword"]);
+		}
+	} //Sisselogimine lõppeb
 		
 	//Kas vajutati registreerimisel submit nuppu?
 	if (isset ($_POST["signupButton"])){
@@ -185,7 +205,7 @@
 			<td><input name="loginPassword" placeholder="Salasõna" type="password"></td>
 		</tr>
 		<tr>
-			<td></td>
+			<td><span style="color:red" ><?php echo $notice, $loginPasswordError; ?></span></td>
 			<td><input name="signinButton" type="submit" value="Logi sisse"></td>
 		</tr>
 	</table>
