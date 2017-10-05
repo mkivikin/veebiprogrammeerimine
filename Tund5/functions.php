@@ -8,9 +8,9 @@
 	function signIn($email, $password){
 		$notice = "";
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"],$GLOBALS["serverPassword"], $GLOBALS["database"]);
-		$stmt = $mysqli->prepare("SELECT id, email, password FROM vp_users WHERE email = ?");
+		$stmt = $mysqli->prepare("SELECT id, email, password, firstname, lastname FROM vp_users WHERE email = ?");
 		$stmt->bind_param("s", $email);
-		$stmt->bind_result($id, $emailFromDb, $passwordFromDb);
+		$stmt->bind_result($id, $emailFromDb, $passwordFromDb, $firstNameDb, $lastNameDb);
 		$stmt->execute();
 		
 		//kontrollime kasutajat
@@ -22,6 +22,8 @@
 				//salvestame sessiooni muutujaid
 				$_SESSION["userID"] = $id;
 				$_SESSION["userEmail"] = $emailFromDb; 
+				$_SESSION["userFirstName"] = $firstNameDb;
+				$_SESSION["userLastName"] = $lastNameDb;
 				
 				//liigume pealehele
 				header("Location: main.php");

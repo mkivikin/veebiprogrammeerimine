@@ -13,9 +13,6 @@
 		header("Location: login.php");
 		exit();
 	}
-	//muutujad
-	$myName = "Marek";
-	$mySurname = "Kivikirbe";
 	
 	$picDir = "../../fotod/";
 	$picFiles = [];
@@ -45,9 +42,10 @@
 	</title>
 </head>
 <body>
-	<h1><?php  echo $myName . " " . $mySurname;?></h1>
+	<h1><?php  echo "Tervist, " .$_SESSION["userFirstName"] ." " .$_SESSION["userLastName"] .".";?></h1>
 	<p>See veebileht on loodud õppetöö raames ning ei 
 	sisalda mingisugust tõsiseltvõetavat sisu!</p>
+	<p><a href="usersInfo.php">Kasutajate nimekiri</a></p>
 	<p><a href="?Logout=1">Logi välja</a></p>
 	<img src ="<?php echo $picDir .$picFile?>" alt="Tallinna Ülikool"> 
 </body>
