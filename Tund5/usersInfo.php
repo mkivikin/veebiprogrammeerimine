@@ -36,15 +36,13 @@
 		$stmt->bind_result($idDb, $emailFromDb, $firstNameDb, $lastNameDb, $genderDb, $birthDateDb);
 		$stmt->execute();	
 		echo "<table border='1' cellpadding='5px' cellspacing='2px'>";
-		echo "<tr><td>ID</td>";
-		echo "<td>Email</td>";
-		echo "<td>First name</td>";
-		echo "<td>Last name</td>";
-		echo "<td>Gender</td>";
-		echo "<td>Birthdate</td></tr>";
-		
+		echo "<tr><th>ID</th>";
+		echo "<th>Email</th>";
+		echo "<th>First name</th>";
+		echo "<th>Last name</th>";
+		echo "<th>Gender</th>";
+		echo "<th>Birthdate</th></tr>";
 		while($stmt->fetch()){
-			//Katkine soo nimetaja
 			echo "<tr><td>" .$idDb ."</td>";
 			echo "<td>" .$emailFromDb ."</td>";
 			echo "<td>" .$firstNameDb ."</td>";
