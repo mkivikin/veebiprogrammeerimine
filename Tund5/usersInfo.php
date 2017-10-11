@@ -45,19 +45,11 @@
 		
 		while($stmt->fetch()){
 			//Katkine soo nimetaja
-			foreach ($stmt as $value) { 
-			if ($genderDb = 1) {
-				$gender = "Male";
-			} elseif ($genderDb = 2) {
-				$gender = "Female";
-			}
-		}
-			//Kuvame numbri asemel soo
 			echo "<tr><td>" .$idDb ."</td>";
 			echo "<td>" .$emailFromDb ."</td>";
 			echo "<td>" .$firstNameDb ."</td>";
 			echo "<td>" .$lastNameDb ."</td>";
-			echo "<td>" .$gender ."</td>";
+			echo "<td>" .genderText($genderDb)."</td>";
 			echo "<td>" .$birthDateDb ."</td>";
 			echo "</tr>";
           //siia read, mis loovad iga kasutaja kohta tabeli rea

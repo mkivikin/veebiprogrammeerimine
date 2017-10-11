@@ -74,6 +74,14 @@
 		echo "Teine summa on:" .(($GLOBALS["x"]) + ($GLOBALS["y"]));
 	}
 	
-	
+	function genderText($genderDb) {
+		if ($genderDb == 1) {
+				$gender = "Male";
+				return $gender;
+			} 	elseif ($genderDb == 2) {
+				$gender = "Female";
+				return $gender;
+			}
+	}
 	
 ?>
