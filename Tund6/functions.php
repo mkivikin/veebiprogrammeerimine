@@ -99,27 +99,20 @@
 	}
 	
 	function listIdeas() {
+		$tableheads ="";
 		$notice="";
+		$table="";
 		//ühendus serveriga
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"],$GLOBALS["serverPassword"], $GLOBALS["database"]);
 		//$stmt = $mysqli->prepare("SELECT idea, ideacolor FROM vp_userideas");
-		$stmt = $mysqli->prepare("SELECT idea, ideacolor, userid FROM vp_userideas WHERE userid = ? ORDER BY id DESC");
-		$stmt->bind_param("i", $_SESSION["userID"]);
-		$stmt->bind_result($ideaDb, $colorDb, $userDb);
+		//$stmt = $mysqli->prepare("SELECT idea, ideacolor, userid FROM vp_userideas WHERE userid = ? ORDER BY id DESC");
+		$stmt = $mysqli->prepare("SELECT vp_userideas.idea, vp_userideas.ideacolor, vp_userideas.userid, vp_users.firstname, vp_users.lastname FROM vp_userideas INNER JOIN vp_users on vp_userideas.userid = vp_users.id ORDER BY vp_userideas.id DESC;");
+		//SELECT vp_userideas.idea, vp_userideas.ideacolor, vp_userideas.userid, vp_users.firstname, vp_users.lastname FROM vp_userideas INNER JOIN vp_users on vp_userideas.userid = vp_users.id;
+		//$stmt->bind_param("i", $_SESSION["userID"]);
+		$stmt->bind_result($ideaDb, $colorDb, $userID, $firstNameDb, $lastNameDb);
 		$stmt->execute();
-		while($stmt->fetch()){
-			$notice .= '<p style="background-color:'.$colorDb .'">'. $ideaDb ."</p> \n";
-		}
-		$stmt->close();
-		$mysqli->close();
-		
-		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"],$GLOBALS["serverPassword"], $GLOBALS["database"]);
-		$stmt = $mysqli->prepare("SELECT firstname, lastname FROM vp_users WHERE id = ?");
-		$stmt->bind_param("i", $userDb);
-		$stmt->bind_result($firstName, $lastName);
-		$stmt->execute();
-		while($stmt->fetch()){
-			$notice .= $firstName. $lastName;
+		while($stmt->fetch()){ 
+			$notice .= '<p style="background-color:'.$colorDb .'">'. $ideaDb .'<i> -' .$firstNameDb .' ' .$lastNameDb. "</i></p> \n";
 		}
 		$stmt->close();
 		$mysqli->close();
