@@ -184,6 +184,7 @@
 	$signupYearSelectHTML.= "</select> \n";
 	
 ?>
+
 <!DOCTYPE html>
 <html lang="et">
 <head>
@@ -191,6 +192,8 @@
 	<title>Sisselogimine või uue kasutaja loomine</title>
 </head>
 <body>
+	<h1>Heade mõtete veeb</h1>
+	<p> värskeim hea mõte: <?php echo latestIdea(); ?> </p>
 	<h1>Logi sisse!</h1>
 	<p>Siin harjutame sisselogimise funktsionaalsust.</p>
 	

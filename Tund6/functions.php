@@ -102,16 +102,40 @@
 		$notice="";
 		//ühendus serveriga
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"],$GLOBALS["serverPassword"], $GLOBALS["database"]);
-		$stmt = $mysqli->prepare("SELECT idea, ideacolor FROM vp_userideas");
-		$stmt->bind_result($ideaDb, $colorDb);
+		//$stmt = $mysqli->prepare("SELECT idea, ideacolor FROM vp_userideas");
+		$stmt = $mysqli->prepare("SELECT idea, ideacolor, userid FROM vp_userideas WHERE userid = ? ORDER BY id DESC");
+		$stmt->bind_param("i", $_SESSION["userID"]);
+		$stmt->bind_result($ideaDb, $colorDb, $userDb);
 		$stmt->execute();
 		while($stmt->fetch()){
 			$notice .= '<p style="background-color:'.$colorDb .'">'. $ideaDb ."</p> \n";
-			
+		}
+		$stmt->close();
+		$mysqli->close();
+		
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"],$GLOBALS["serverPassword"], $GLOBALS["database"]);
+		$stmt = $mysqli->prepare("SELECT firstname, lastname FROM vp_users WHERE id = ?");
+		$stmt->bind_param("i", $userDb);
+		$stmt->bind_result($firstName, $lastName);
+		$stmt->execute();
+		while($stmt->fetch()){
+			$notice .= $firstName. $lastName;
 		}
 		$stmt->close();
 		$mysqli->close();
 		return $notice;
+	}
+	
+	function latestIdea() {
+		//ühendus serveriga
+		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"],$GLOBALS["serverPassword"], $GLOBALS["database"]);
+		$stmt = $mysqli->prepare("SELECT idea FROM vp_userideas WHERE id =(SELECT MAX(id) FROM vp_userideas)");
+		$stmt->bind_result($ideaDb);
+		$stmt->execute();
+		$stmt->fetch();
+		$stmt->close();
+		$mysqli->close();
+		return $ideaDb;
 	}
 	
 ?>
