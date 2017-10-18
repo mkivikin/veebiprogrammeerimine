@@ -98,6 +98,18 @@
 			}
 	}
 	
+	function color_inverse($color){
+    $color = str_replace('#', '', $color);
+    if (strlen($color) != 6){ return '000000'; }
+    $rgb = '';
+    for ($x=0;$x<3;$x++){
+        $c = 255 - hexdec(substr($color,(2*$x),2));
+        $c = ($c < 0) ? 0 : dechex($c);
+        $rgb .= (strlen($c) < 2) ? '0'.$c : $c;
+    }
+    return '#'.$rgb;
+}
+
 	function listIdeas() {
 		$tableheads ="";
 		$notice="";
@@ -112,7 +124,11 @@
 		$stmt->bind_result($ideaDb, $colorDb, $userID, $firstNameDb, $lastNameDb);
 		$stmt->execute();
 		while($stmt->fetch()){ 
-			$notice .= '<p style="background-color:'.$colorDb .'">'. $ideaDb .'<i> -' .$firstNameDb .' ' .$lastNameDb. "</i></p> \n";
+			$colorinv = color_inverse($colorDb);
+			//$notice .= '<p style="background-color:'.$colorDb .'">'. $ideaDb .'<i> -' .$firstNameDb .' ' .$lastNameDb. "</i></p> \n";
+			$notice .= '<p style="color:'.$colorinv .';background-color:'.$colorDb .';">'.$ideaDb .'<i> -' .$firstNameDb .' ' .$lastNameDb. "</i></p> \n"; 
+			//echo $colorDb;
+			//echo $colorinv;
 		}
 		$stmt->close();
 		$mysqli->close();

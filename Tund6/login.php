@@ -23,7 +23,9 @@
 	if(isset ($_SESSION["userID"])){
 		header("Location: main.php");
 		exit();
+		
 	}
+	
 	
 	//Kas klõpsati sisselogimise nuppu?
 	if (isset ($_POST["signinButton"])) {
@@ -192,6 +194,9 @@
 	<title>Sisselogimine või uue kasutaja loomine</title>
 </head>
 <body>
+<object width="480" height="350" autoplay="TRUE" data="http://www.youtube.com/v/Gs069dndIYk?" type="application/x-shockwave-flash"><param name="src" value="http://www.youtube.com/v/Gs069dndIYk?" /> 
+
+</object>
 	<h1>Heade mõtete veeb</h1>
 	<p> värskeim hea mõte: <?php echo latestIdea(); ?> </p>
 	<h1>Logi sisse!</h1>
