@@ -47,6 +47,7 @@
 	sisalda mingisugust tõsiseltvõetavat sisu!</p>
 	<p><a href="usersInfo.php">Kasutajate nimekiri</a></p>
 	<p><a href="usersIdeas.php">Head mõtted</a></p>
+	<p><a href="photoupload.php">Fotode üleslaadimine</a></p>
 	<p><a href="?Logout=1">Logi välja</a></p>
 	<img src ="<?php echo $picDir .$picFile?>" alt="Tallinna Ülikool"> 
 </body>
